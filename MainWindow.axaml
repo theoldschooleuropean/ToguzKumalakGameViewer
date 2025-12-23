@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ToguzKumalakProcessor.MainWindow"
+        Width="450" Height="400" Title="Toguz Kumalak Processor">
+    <StackPanel Margin="20" Spacing="10">
+        <CheckBox x:Name="FilterNameCheckbox" Content="Nach Spielername filtern" />
+        <TextBox x:Name="PlayerNameTextBox" Watermark="Spielername eingeben..." 
+                 IsEnabled="{Binding #FilterNameCheckbox.IsChecked}" />
+        
+        <Separator Height="10"/>
+        
+        <Button x:Name="SelectInputFileButton" Content="1. TXT-Dateien auswählen" HorizontalAlignment="Stretch"/>
+        <TextBlock x:Name="InputFileLabel" Text="Keine Dateien ausgewählt" FontSize="12" Foreground="Gray" HorizontalAlignment="Center"/>
+        
+        <Button x:Name="ProcessButton" Content="2. Verarbeiten &amp; Löschen" IsEnabled="False" 
+                HorizontalAlignment="Stretch" Background="LightBlue"/>
+        
+        <TextBlock x:Name="StatusLabel" Text="" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,10"/>
+        
+        <Button x:Name="ViewCsvButton" Content="CSV Viewer öffnen" HorizontalAlignment="Stretch"/>
+    </StackPanel>
+</Window>

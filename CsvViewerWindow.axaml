@@ -1,0 +1,8 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonia="https://github.com/avaloniaui"
+        x:Class="ToguzKumalakProcessor.CsvViewerWindow"
+        Width="1000" Height="600"
+        Title="CSV Viewer">
+    <TabControl Name="CsvTabs"/>
+</Window>

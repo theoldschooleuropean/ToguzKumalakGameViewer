@@ -1,0 +1,12 @@
+# Ignoriere die vom Programm erstellten Daten
+output/
+*_output/
+settings.conf
+
+# Ignoriere die Bau-Ordner von Visual Studio / dotnet
+bin/
+obj/
+
+# Ignoriere Betriebssystem-Dateien
+.DS_Store
+Thumbs.db
