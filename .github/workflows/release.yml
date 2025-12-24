@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*' # Pipeline startet, wenn du ein Tag wie v1.1.0 hochlädst
+      - '*' # Pipeline startet, wenn du ein Tag wie 1.1.0 hochlädst
 
 jobs:
   build:
