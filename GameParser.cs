@@ -1,5 +1,3 @@
-#nullable enable
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +10,8 @@ namespace ToguzKumalakProcessor
     {
         public string White { get; set; } = "";
         public string Black { get; set; } = "";
+        public string Date { get; set; } = ""; // Neues Feld für Datum
+        public string Time { get; set; } = ""; // Neues Feld für Uhrzeit
         public List<string> Sp1 { get; } = new();
         public List<string> Sp2 { get; } = new();
     }
@@ -33,11 +33,18 @@ namespace ToguzKumalakProcessor
                 else if (line.StartsWith("[Black \"") && current != null) {
                     current.Black = line.Split('\"')[1];
                 }
+                // Extraktion von Datum und Zeit
+                else if (line.StartsWith("[Date \"") && current != null) {
+                    current.Date = line.Split('\"')[1];
+                }
+                else if (line.StartsWith("[Time \"") && current != null) {
+                    current.Time = line.Split('\"')[1];
+                }
                 else if (current != null && (line.StartsWith("1.") || (line.Length > 0 && char.IsDigit(line[0])))) {
                     ParseMoves(line, current);
                 }
             }
-            // Filter Logik
+
             return games.Where(g => g.Sp1.Count > 0 && 
                 (string.IsNullOrEmpty(filterName) || 
                  g.White.Equals(filterName, StringComparison.OrdinalIgnoreCase) || 
@@ -86,7 +93,10 @@ namespace ToguzKumalakProcessor
                 newlyAddedCount++;
 
                 if (table.Count == 0) table.Add(new List<string>());
-                table[0].AddRange(new[] { g.White, g.Black, "" });
+                
+                // Header erweitert um Datum und Zeit (optional in die gleiche Spalte oder als Info)
+                // Hier füge ich sie in die Kopfzeile der neuen Spalten ein
+                table[0].AddRange(new[] { $"{g.White} ({g.Date} {g.Time})", g.Black, "" });
 
                 int maxRows = Math.Max(g.Sp1.Count, g.Sp2.Count) + 1; 
                 while (table.Count < maxRows) table.Add(Enumerable.Repeat("", table[0].Count - 3).ToList());
