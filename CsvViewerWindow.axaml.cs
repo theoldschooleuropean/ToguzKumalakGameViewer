@@ -14,6 +14,12 @@ namespace ToguzKumalakProcessor
     {
         private readonly string _highlightName;
 
+        public CsvViewerWindow()
+        {
+            InitializeComponent();
+            LoadCsvSheets();
+        }
+
         public CsvViewerWindow(string highlightName)
         {
             InitializeComponent();
@@ -75,7 +81,7 @@ namespace ToguzKumalakProcessor
                 }
                 
                 grid.LoadingRow += (s, e) => {
-                    if (e.Row.GetIndex() == 0) { 
+                    if (e.Row.Index == 0) { 
                         e.Row.Background = new SolidColorBrush(Color.Parse("#D6EAF8")); 
                         e.Row.Foreground = new SolidColorBrush(Color.Parse("#1A5276")); 
                         e.Row.FontWeight = FontWeight.Bold;
