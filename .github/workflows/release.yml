@@ -1,0 +1,32 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Pipeline startet, wenn du ein Tag wie v1.1.0 hochlädst
+
+jobs:
+  build:
+    runs-on: windows-latest # Der Roboter nutzt einen Windows-Server
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '10.0.x' # Deine .NET Version
+
+    - name: Publish Windows
+      run: dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish
+
+    - name: Zip Artifacts
+      run: Compress-Archive -Path ./publish/* -DestinationPath ./ToguzKumalak_Windows.zip
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ToguzKumalak_Windows.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
