@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest # Der Roboter nutzt einen Windows-Server
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout Code
