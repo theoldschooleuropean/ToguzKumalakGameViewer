@@ -12,6 +12,7 @@ namespace ToguzKumalakProcessor
         public string Black { get; set; } = "";
         public string Date { get; set; } = "";
         public string Time { get; set; } = "";
+        public string Result { get; set; } = ""; // Neues Feld für das Ergebnis
         public List<string> Sp1 { get; } = new();
         public List<string> Sp2 { get; } = new();
     }
@@ -31,6 +32,7 @@ namespace ToguzKumalakProcessor
                 else if (line.StartsWith("[Black \"") && current != null) current.Black = line.Split('\"')[1];
                 else if (line.StartsWith("[Date \"") && current != null) current.Date = line.Split('\"')[1];
                 else if (line.StartsWith("[Time \"") && current != null) current.Time = line.Split('\"')[1];
+                else if (line.StartsWith("[Result \"") && current != null) current.Result = line.Split('\"')[1];
                 else if (current != null && (line.StartsWith("1.") || (line.Length > 0 && char.IsDigit(line[0])))) ParseMoves(line, current);
             }
 
@@ -56,7 +58,8 @@ namespace ToguzKumalakProcessor
                 newlyAddedCount++;
 
                 if (table.Count == 0) table.Add(new List<string>());
-                table[0].AddRange(new[] { g.White, g.Black, "" });
+                // Wir speichern das Ergebnis im Header mit: Name|Resultat
+                table[0].AddRange(new[] { $"{g.White}|{g.Result}", $"{g.Black}|{g.Result}", "" });
 
                 if (table.Count < 2) table.Add(Enumerable.Repeat("", table[0].Count - 3).ToList());
                 table[1].AddRange(new[] { g.Date, g.Time, "" });
@@ -79,12 +82,7 @@ namespace ToguzKumalakProcessor
             var tokens = cleanLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var token in tokens)
             {
-                if (Regex.IsMatch(token, @"^\d+\.$")) continue;
-                if (token == "1-0" || token == "0-1" || token == "1/2-1/2" || token == "*") {
-                    if (game.Sp2.Count < game.Sp1.Count && game.Sp1.Count > 0) game.Sp1[game.Sp1.Count - 1] += $" ({token})";
-                    else if (game.Sp2.Count > 0) game.Sp2[game.Sp2.Count - 1] += $" ({token})";
-                    continue;
-                }
+                if (Regex.IsMatch(token, @"^\d+\.$") || token == "1-0" || token == "0-1" || token == "1/2-1/2" || token == "*") continue;
                 if (game.Sp1.Count == game.Sp2.Count) game.Sp1.Add(token); else game.Sp2.Add(token);
             }
         }
